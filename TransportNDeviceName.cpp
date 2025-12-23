@@ -55,3 +55,9 @@ bool TransportNDeviceNames::hasAnyFor(
     });
     return it != transportNDeviceNames.end();
 }
+
+bool TransportNDeviceNames::add(
+    const std::string &macAddressOrDeviceName
+) {
+    return false;
+}

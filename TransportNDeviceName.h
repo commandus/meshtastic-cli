@@ -24,6 +24,7 @@ public:
     bool deviceAllowed(const MeshtasticDevice *device) const;
 
     bool hasAnyFor(MeshtasticTransportType transportType);
+    bool add(const std::string &macAddressOrDeviceName);
 };
 
 #endif

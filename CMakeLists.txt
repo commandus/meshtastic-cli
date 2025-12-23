@@ -79,7 +79,7 @@ add_dependencies(libmeshtastic-pb GeneratedProtobuf)
 target_include_directories(libmeshtastic-pb PRIVATE third-party ${INC_PB} ${GEN})
 
 set(SRC_LIB_MESHTASTIC
-    meshtastic-cli.cpp
+    MeshtasticClient.cpp
     MeshtasticTypes.cpp
     MeshtasticString.cpp BLEGuid.cpp
     MeshtasticEnvironmentEvent.cpp
@@ -111,9 +111,10 @@ target_compile_definitions(meshtastic PRIVATE ${TLNS_DEF})
 target_include_directories(meshtastic PRIVATE "." "third-party" ${VCPKG_INC} ${INC_PB} ${GEN})
 target_link_libraries(meshtastic PRIVATE ${OS_SPECIFIC_LIBS} )
 
-add_executable(meshtastic-cli meshtastic-cli.cpp)
-target_include_directories(meshtastic-cli PRIVATE third-party ${INC_PB} ${GEN})
-target_link_libraries(meshtastic-cli PRIVATE meshtastic ${OS_SPECIFIC_LIBS} ${LIB_PB} libmeshtastic-pb ${LIB_CURSES})
+# CLI client
+add_executable(mtcli mtcli.cpp)
+target_include_directories(mtcli PRIVATE third-party ${INC_PB} ${GEN})
+target_link_libraries(mtcli PRIVATE meshtastic ${OS_SPECIFIC_LIBS} ${LIB_PB} libmeshtastic-pb ${LIB_CURSES})
 
 #
 # Tests

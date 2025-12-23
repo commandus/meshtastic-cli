@@ -29,8 +29,13 @@ void MeshtasticSerialTransport::listPorts(
         const char* device = devices.c_str();
         while (*device) {
             auto len = strlen(device);
-            if (strncmp(device, COM_PORT_NAME_PREFIX, 3) == 0) {
-                ports.push_back(atoi(device + 3));
+            std::string deviceFileNameUpperCase(device, len);
+            std::transform(deviceFileNameUpperCase.begin(), deviceFileNameUpperCase.end(), std::back_inserter(deviceFileNameUpperCase), ::toupper);
+            auto p = deviceFileNameUpperCase.find(COM_PORT_NAME_PREFIX);
+            if (p == 0) {
+                auto portNum = strtoul(deviceFileNameUpperCase.c_str() + 3, nullptr, 10);
+                if (portNum >= 1 && portNum < 255)
+                    ports.push_back(portNum);
             }
             device += len + 1;
         }

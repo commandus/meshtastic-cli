@@ -1,7 +1,7 @@
 /**
- *  ./meshtastic_cli -vvv --ble
- *  ./meshtastic_cli -vvv -c COM4  --mode nodes
- *  ./meshtastic_cli -vvv -c COM4  --mode sendtext --node !9aa9259d --value test1
+ *  ./mtcli -vvv --ble
+ *  ./mtcli -vvv -c COM4  --mode nodes
+ *  ./mtcli -vvv -c COM4  --mode sendtext --node !9aa9259d --value test1
  */
 
 #include <iostream>

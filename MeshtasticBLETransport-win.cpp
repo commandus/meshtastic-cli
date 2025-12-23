@@ -603,7 +603,9 @@ int MeshtasticBLETransport::startDiscovery() {
             unsigned char *c = dataSection.Data().data();
             uint32_t len = dataSection.Data().Length();
 
-            if (dataSection.DataType() == winrt::Windows::Devices::Bluetooth::Advertisement::BluetoothLEAdvertisementDataTypes::CompleteService128BitUuids()) {
+            if (dataSection.DataType() == winrt::Windows::Devices::Bluetooth::Advertisement::BluetoothLEAdvertisementDataTypes::CompleteService128BitUuids()
+                || dataSection.DataType() == winrt::Windows::Devices::Bluetooth::Advertisement::BluetoothLEAdvertisementDataTypes::IncompleteService128BitUuids()
+            ) {
                 size_t sz = len / 16;
                 for (int i = 0; i < sz; i++) {
                     winrt::guid g;
@@ -612,7 +614,8 @@ int MeshtasticBLETransport::startDiscovery() {
                     c += 16;
                 }
             }
-            if (dataSection.DataType() == winrt::Windows::Devices::Bluetooth::Advertisement::BluetoothLEAdvertisementDataTypes::CompleteService32BitUuids()) {
+            if (dataSection.DataType() == winrt::Windows::Devices::Bluetooth::Advertisement::BluetoothLEAdvertisementDataTypes::CompleteService32BitUuids()
+                || dataSection.DataType() == winrt::Windows::Devices::Bluetooth::Advertisement::BluetoothLEAdvertisementDataTypes::IncompleteService32BitUuids()) {
                 size_t sz = len / 4;
                 for (int i = 0; i < sz; i++) {
                     winrt::guid g;
@@ -621,7 +624,8 @@ int MeshtasticBLETransport::startDiscovery() {
                     c += 4;
                 }
             }
-            if (dataSection.DataType() == winrt::Windows::Devices::Bluetooth::Advertisement::BluetoothLEAdvertisementDataTypes::CompleteService16BitUuids()) {
+            if (dataSection.DataType() == winrt::Windows::Devices::Bluetooth::Advertisement::BluetoothLEAdvertisementDataTypes::CompleteService16BitUuids()
+                || dataSection.DataType() == winrt::Windows::Devices::Bluetooth::Advertisement::BluetoothLEAdvertisementDataTypes::IncompleteService16BitUuids()) {
                 size_t sz = len / 2;
                 for (int i = 0; i < sz; i++) {
                     winrt::guid g;

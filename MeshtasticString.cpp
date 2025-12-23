@@ -1428,4 +1428,56 @@ std::string MeshtasticString::currentTimeStamp()
     return ss.str();
 }
 
+uint64_t MeshtasticString::string2macAddress(
+    const std::string &str,
+    bool *retValid
+) {
+    std::string s(str);
+    s.erase(std::remove(s.begin(), s.end(), ':'), s.end());
+    if (s.size() + 5 != str.size()) {
+        // must have 5 ':' delimiters
+        if (retValid)
+            *retValid = false;
+        return ULLONG_MAX;
+    }
+
+    uint64_t r = strtoull(s.c_str(), nullptr, 16);
+    if (r == ULLONG_MAX) {
+        // check is it an error
+        if (errno == ERANGE) {
+            if (s.find_first_not_of("0123456789abcdefABCDEF") == std::string::npos) {
+                if (retValid)
+                    *retValid = false;
+            }
+        }
+    }
+    if (retValid)
+        *retValid = true;
+    return r;
+}
+
+bool MeshtasticString::isMacAddressString(
+    const std::string &str
+) {
+    bool r;
+    MeshtasticString::string2macAddress(str, &r);
+    return r;
+}
+
+bool MeshtasticString::isDeviceFileNameString(
+    const std::string &str
+) {
+#ifdef _MSC_VER
+    std::string deviceFileNameUpperCase(str);
+    std::transform(deviceFileNameUpperCase.begin(), deviceFileNameUpperCase.end(), std::back_inserter(deviceFileNameUpperCase), ::toupper);
+    auto p = deviceFileNameUpperCase.find("COM");
+    if (p == 0) {
+        auto portNum = strtoul(deviceFileNameUpperCase.c_str() + 3, nullptr, 10);
+        return portNum >= 1 && portNum < 255;
+    }
+    return false;
+#else
+#endif
+}
+
 #endif

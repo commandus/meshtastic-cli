@@ -15,6 +15,11 @@
 class MeshtasticString {
 public:
     static std::string macAddress2string(uint64_t addr);
+    // check is valid MAC address e.g. 9c:13:9e:a0:b7:5d
+    static bool isMacAddressString(const std::string &str);
+    static uint64_t MeshtasticString::string2macAddress(const std::string &str, bool *retValid = nullptr);
+    // check is valid device file name e.g. COM4
+    static bool isDeviceFileNameString(const std::string &str);
     static std::string transportType2String(MeshtasticTransportType type);
     static std::string advertisementDataType2String(uint8_t dataType);
     static std::string hex(const std::string &str);

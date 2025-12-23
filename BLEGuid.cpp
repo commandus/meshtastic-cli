@@ -61,7 +61,6 @@ void BLEGuid::set(
             uuid = bluetoothBaseUUID;
             memmove(&uuid.Data1, buffer, 2);
 #if IS_BIG_ENDIAN
-#else
             uuid.Data1 = SWAP_BYTES_2(uuid.Data1);
 #endif
             break;
@@ -70,7 +69,6 @@ void BLEGuid::set(
             memmove(&uuid.Data1, buffer, 2);
 #if IS_BIG_ENDIAN
             uuid.Data1 = SWAP_BYTES_4(uuid.Data1);
-#else
 #endif
             break;
         case 16: {
@@ -83,7 +81,6 @@ void BLEGuid::set(
             uuid.Data1 = SWAP_BYTES_4(uuid.Data1);
             uuid.Data2 = SWAP_BYTES_2(uuid.Data2);
             uuid.Data3 = SWAP_BYTES_2(uuid.Data3);
-#else
 #endif
             (*((uint64_t*) &uuid.Data4)) = SWAP_BYTES_8(*((uint64_t*) &uuid.Data4));
         }
