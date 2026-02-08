@@ -29,6 +29,14 @@
 #define LOG_INFO 3
 #define LOG_DEBUG 4
 
+typedef union {
+    uint64_t v;
+    struct {
+        uint32_t h;
+        uint32_t l;
+    };
+} HASH_TYPE;
+
 enum MeshtasticListenerState {
     MLS_STOPPED,
     MLS_WAIT_ANY_MSG,

@@ -19,6 +19,7 @@ public:
     MeshtasticDeviceBLE(MeshtasticTransport *aTransport);
     MeshtasticDeviceBLE(MeshtasticTransport *aTransport, uint64_t addr);
     MeshtasticDeviceBLE(MeshtasticBLETransport *aTransport, uint64_t addr, const std::string &name);
+    virtual ~MeshtasticDeviceBLE();
     bool equals(MeshtasticDevice *cmp) const override;
     bool isValid() const override;
     uint64_t hash() const override;

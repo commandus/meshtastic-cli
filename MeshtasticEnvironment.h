@@ -101,6 +101,8 @@ public:
     void deviceConfigured(const MeshtasticDevice *device);
     uint32_t configuredRunningDeviceCount();
     uint32_t discoveredDeviceCount();
+    uint64_t hash() const;
+    uint32_t tag() const;
 };
 
 #endif

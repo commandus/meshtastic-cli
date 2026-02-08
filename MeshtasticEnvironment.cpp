@@ -45,9 +45,11 @@ void MeshtasticEnvironment::stopTransport(
 )
 {
     switch (typ) {
-        case MTT_BLE: {
+        case MTT_ANY:
+            rmTransport(MTT_BLE);
+            break;
+        case MTT_BLE:
             rmTransport(typ);
-        }
             break;
         case MTT_SERIAL:
             break;
@@ -319,6 +321,7 @@ uint32_t MeshtasticEnvironment::waitDeviceConfigured(
 bool MeshtasticEnvironment::isDebugEnabled(
     int verbose
 ) {
+    // std::cout << "isDebugEnabled " << verbose << " " << tag() << std::endl;
     return (verbosity >= verbose && logStream);
 }
 
@@ -451,4 +454,14 @@ uint32_t MeshtasticEnvironment::configuredRunningDeviceCount() {
 
 uint32_t MeshtasticEnvironment::discoveredDeviceCount() {
     return (uint32_t) devices.size();
+}
+
+uint64_t MeshtasticEnvironment::hash() const {
+    return (uint64_t) this;
+}
+
+uint32_t MeshtasticEnvironment::tag() const {
+    HASH_TYPE u64_2;
+    u64_2.v = hash();
+    return u64_2.l;
 }

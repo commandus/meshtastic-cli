@@ -59,13 +59,7 @@ void MeshtasticDevice::requestDeviceContext()
 }
 
 uint32_t MeshtasticDevice::tag() const {
-    union {
-        uint64_t v;
-        struct {
-            uint32_t h;
-            uint32_t l;
-        };
-    } u64_2;
+    HASH_TYPE u64_2;
     u64_2.v = hash();
     return u64_2.l;
 }
@@ -109,7 +103,7 @@ void MeshtasticDevice::stopListener(
     state = MLS_STOP;
     lckListener.unlock();
 
-    if (transport && transport->env && transport->env->isDebugEnabled(LOG_INFO)) {
+    if (transport->env->isDebugEnabled(LOG_INFO)) {
         std::stringstream ss;
         ss << "Device " << name << " listener stop in " << seconds << "s.";
         transport->env->debugLog(LOG_INFO, ss.str(), this);
@@ -120,7 +114,7 @@ void MeshtasticDevice::stopListener(
         if (cvListenerState.wait_for(lock, std::chrono::seconds(seconds), [this] {
             return state == MLS_STOPPED;
         })) {
-            if (transport && transport->env && transport->env->isDebugEnabled(LOG_INFO)) {
+            if (transport->env->isDebugEnabled(LOG_INFO)) {
                 std::stringstream ss;
                 ss << "Device " << name << " listener successfully stopped.";
                 transport->env->debugLog(LOG_INFO, ss.str(), this);
@@ -129,7 +123,7 @@ void MeshtasticDevice::stopListener(
             return;
         }
         // kill detached thread here ...
-        if (transport && transport->env && transport->env->isDebugEnabled(LOG_ERR)) {
+        if (transport->env->isDebugEnabled(LOG_ERR)) {
             std::stringstream ss;
             ss << "Device " << name << " listener stop failed..";
             transport->env->debugLog(LOG_ERR, ss.str(), this);

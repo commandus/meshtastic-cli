@@ -7,7 +7,8 @@
 #include <winrt/windows.devices.bluetooth.advertisement.h>
 
 MeshtasticDeviceBLE::MeshtasticDeviceBLE(MeshtasticTransport *aTransport)
-    : MeshtasticDevice(aTransport), addr(0), device(nullptr), session(nullptr), service(nullptr), characteristics{ nullptr, nullptr, nullptr, nullptr }
+    : MeshtasticDevice(aTransport), addr(0), device(nullptr), session(nullptr), service(nullptr),
+    characteristics{ nullptr, nullptr, nullptr, nullptr }
 {
 
 }
@@ -55,5 +56,9 @@ bool MeshtasticDeviceBLE::isValid() const {
 
 std::string MeshtasticDeviceBLE::addressAsString() const {
     return MeshtasticString::macAddress2string(addr);
+}
+
+MeshtasticDeviceBLE::~MeshtasticDeviceBLE() {
+
 }
 
