@@ -240,31 +240,37 @@ static void stop()
 
 static void run()
 {
+    MeshtasticBLETransport bleTransport(&envArgs.env);
+    MeshtasticSerialTransport serialTransport(&envArgs.env);
+
     envArgs.state = CRS_RUNNING;
     envArgs.env.setDebugLog(envArgs.verbose, &std::cout);
 
     ConsolePinCodeProvider consolePinCodeProvider;
     envArgs.env.pinCodeProvider = &consolePinCodeProvider;
 
+
     if (envArgs.enableBLE) {
-        MeshtasticBLETransport bleTransport(&envArgs.env);
         envArgs.env.addTransport(&bleTransport);
     }
 
     if (envArgs.enableSerial) {
-        MeshtasticSerialTransport serialTransport(&envArgs.env);
         envArgs.env.addTransport(&serialTransport);
-    }
-
-    if (envArgs.env.transportCount() == 0) {
-        std::cerr << _("No meshtastic device found") << std::endl;
-        return;
     }
 
     MyEventHandler eh;
     envArgs.env.addEventHandler(&eh);
 
-    // envArgs.env.waitDiscovery(1);
+    uint32_t devicesConfigured = envArgs.env.waitDeviceConfigured(30);
+    envArgs.env.stopDiscovery(MTT_ANY);
+
+    if (devicesConfigured == 0) {
+        std::cerr << _("No meshtastic device found") << std::endl;
+        return;
+    }
+    if (envArgs.verbose) {
+        std::cout << envArgs.env.count() << _(" device(s) found") << std::endl;
+    }
 
     switch (envArgs.mode) {
         case CM_LIST_NODES:

@@ -6,7 +6,6 @@
 
 #include "MeshtasticOSEnvironment.h"
 #include "MeshtasticDeviceBLE.h"
-#include "MeshtasticBLETransport.h"
 #include "ConsolePinCodeProvider.h"
 
 int main(int argc, char **argv) {
@@ -18,7 +17,7 @@ int main(int argc, char **argv) {
     ConsolePinCodeProvider consolePinCodeProvider;
     env.pinCodeProvider = &consolePinCodeProvider;
 
-    env.filterDevice.transportNDeviceNames.emplace_back(MTT_BLE, "9c:13:9e:a0:b7:5d");
+    // env.filterDevice.transportNDeviceNames.emplace_back(MTT_BLE, "9c:13:9e:a0:b7:5d");
 
     env.addTransport(&bleTransport);
     assert(env.transportCount() == 1);

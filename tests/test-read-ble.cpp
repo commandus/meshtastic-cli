@@ -76,7 +76,7 @@ int main(int argc, char **argv) {
     env.setDebugLog(3, &std::cerr);
     MeshtasticBLETransport bleTransport(&env);
 
-    env.filterDevice.transportNDeviceNames.emplace_back(MTT_BLE, "9c:13:9e:a0:b7:5d");
+    // env.filterDevice.transportNDeviceNames.emplace_back(MTT_BLE, "9c:13:9e:a0:b7:5d");
 
     ConsolePinCodeProvider consolePinCodeProvider;
     env.pinCodeProvider = &consolePinCodeProvider;

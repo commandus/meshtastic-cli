@@ -4662,7 +4662,7 @@ void arg_print_syntax(FILE *fp, void * *argtable, const char *suffix)
     arg_print_gnuswitch(fp, table);
 
     /* print remaining options in abbreviated style */
-    for(tabindex = 0;
+    for (tabindex = 0;
         table[tabindex] && !(table[tabindex]->flag & ARG_TERMINATOR);
         tabindex++)
     {
