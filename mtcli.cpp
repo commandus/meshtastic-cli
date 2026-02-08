@@ -166,6 +166,11 @@ public:
             env.filterDevice.transportNDeviceNames.emplace_back( MTT_SERIAL, *a_serial_ports[i].sval );
         }
 
+        if (!enableSerial && !enableBLE) {
+            std::cerr << _("No BLE or serial interface selected. Enable BLE: -b") << std::endl;
+            errorCount++;
+        }
+
         if (a_mode->count > 0) {
             std::string m(*a_mode->sval);
             std::transform(m.begin(), m.end(), m.begin(), ::tolower);
@@ -194,10 +199,10 @@ public:
         if ((a_help->count) || errorCount) {
             if (errorCount)
                 arg_print_errors(stderr, a_end, programName);
-            std::cerr << _("meshtastic client") << "\n"
+            std::cout << _("meshtastic client") << "\n"
                 << _("Usage: ") << programName << std::endl;
-            arg_print_syntax(stderr, argtable, "\n");
-            arg_print_glossary(stderr, argtable, "  %-27s %s\n");
+            arg_print_syntax(stdout, argtable, "\n");
+            arg_print_glossary(stdout, argtable, "  %-27s %s\n");
             arg_freetable(argtable, sizeof(argtable) / sizeof(argtable[0]));
             return false;
         }
