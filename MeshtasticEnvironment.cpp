@@ -12,6 +12,7 @@ MeshtasticEnvironment::MeshtasticEnvironment()
 }
 
 MeshtasticEnvironment::~MeshtasticEnvironment() {
+    setDebugLog(0, nullptr);
     clearEventHandlers();
     clearDevices();
     clearTransport();

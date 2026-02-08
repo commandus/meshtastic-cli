@@ -105,21 +105,22 @@ void MeshtasticDevice::stopListener(
 ) {
     if (state == MLS_STOPPED)
         return;
-    if (transport->env->isDebugEnabled(LOG_INFO)) {
+    std::unique_lock<std::mutex> lckListener(mutexListener);
+    state = MLS_STOP;
+    lckListener.unlock();
+
+    if (transport && transport->env && transport->env->isDebugEnabled(LOG_INFO)) {
         std::stringstream ss;
         ss << "Device " << name << " listener stop in " << seconds << "s.";
         transport->env->debugLog(LOG_INFO, ss.str(), this);
     }
-    std::unique_lock<std::mutex> lckListener(mutexListener);
-    state = MLS_STOP;
-    lckListener.unlock();
 
     if (listenerThread) {
         std::unique_lock<std::mutex> lock(mutexListener);
         if (cvListenerState.wait_for(lock, std::chrono::seconds(seconds), [this] {
             return state == MLS_STOPPED;
         })) {
-            if (transport->env->isDebugEnabled(LOG_INFO)) {
+            if (transport && transport->env && transport->env->isDebugEnabled(LOG_INFO)) {
                 std::stringstream ss;
                 ss << "Device " << name << " listener successfully stopped.";
                 transport->env->debugLog(LOG_INFO, ss.str(), this);
@@ -128,7 +129,7 @@ void MeshtasticDevice::stopListener(
             return;
         }
         // kill detached thread here ...
-        if (transport->env->isDebugEnabled(LOG_ERR)) {
+        if (transport && transport->env && transport->env->isDebugEnabled(LOG_ERR)) {
             std::stringstream ss;
             ss << "Device " << name << " listener stop failed..";
             transport->env->debugLog(LOG_ERR, ss.str(), this);
@@ -217,12 +218,10 @@ MeshtasticDevice::~MeshtasticDevice()
 {
     stopListener(); // stop and wait until it is stopped
     // do not destroy object until listener is stopped
-    /*
     std::unique_lock<std::mutex> lock(mutexListener);
-    cvListenerState.wait_for(lock, std::chrono::seconds(60), [this] {
+    cvListenerState.wait_for(lock, std::chrono::seconds(10), [this] {
         return state == MLS_STOPPED;
     });
-     */
 }
 
 bool MeshtasticDevice::waitState(
