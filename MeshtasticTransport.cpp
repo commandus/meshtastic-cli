@@ -101,4 +101,10 @@ bool MeshtasticTransport::ping(
     return true;
 }
 
-MeshtasticTransport::~MeshtasticTransport() = default;
+MeshtasticTransport::~MeshtasticTransport()
+{
+    if (env->isDebugEnabled(LOG_INFO)) {
+        std::stringstream ss;
+        env->debugLog(LOG_INFO, _("Transport closed"));
+    }
+}

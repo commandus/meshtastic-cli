@@ -106,6 +106,9 @@ public:
 
     std::string pidFile;
 
+    MeshtasticBLETransport bleTransport = MeshtasticBLETransport(&env);
+    MeshtasticSerialTransport serialTransport = MeshtasticSerialTransport(&env);
+
     MeshtasticEnvNParams()
         : state(CRS_STOPPED), mode(CM_LISTEN), showActivity(false), verbose(0), daemonize(false),
             enableBLE(false), enableSerial(false)
@@ -240,9 +243,6 @@ static void stop()
 
 static void run()
 {
-    MeshtasticBLETransport bleTransport(&envArgs.env);
-    MeshtasticSerialTransport serialTransport(&envArgs.env);
-
     envArgs.state = CRS_RUNNING;
     envArgs.env.setDebugLog(envArgs.verbose, &std::cout);
 
@@ -251,11 +251,11 @@ static void run()
 
 
     if (envArgs.enableBLE) {
-        envArgs.env.addTransport(&bleTransport);
+        envArgs.env.addTransport(&envArgs.bleTransport);
     }
 
     if (envArgs.enableSerial) {
-        envArgs.env.addTransport(&serialTransport);
+        envArgs.env.addTransport(&envArgs.serialTransport);
     }
 
     MyEventHandler eh;

@@ -135,9 +135,7 @@ void MeshtasticDevice::stopListener(
 void MeshtasticDevice::listenerRun()
 {
     if (transport->env->isDebugEnabled(LOG_INFO)) {
-        std::stringstream ss;
-        ss << _("Device ") << name << _(" listener started");
-        transport->env->debugLog(LOG_INFO, ss.str(), this);
+        transport->env->debugLog(LOG_INFO, _("Device listener started"), this);
     }
     std::unique_lock<std::mutex> lckListener(mutexListener);
     state = MLS_WAIT_ANY_MSG;
@@ -197,9 +195,7 @@ void MeshtasticDevice::listenerRun()
     }
 
     if (transport->env->isDebugEnabled(LOG_INFO)) {
-        std::stringstream ss;
-        ss << _("Device ") << name << _(" listener stopped");
-        transport->env->debugLog(LOG_INFO, ss.str(), this);
+        transport->env->debugLog(LOG_INFO, _("Device listener stopped"), this);
     }
 
     std::unique_lock<std::mutex> lckListener2(mutexListener);

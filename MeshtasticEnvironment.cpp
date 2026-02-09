@@ -331,8 +331,13 @@ void MeshtasticEnvironment::debugLog(
     const MeshtasticDevice *device
 ) {
     if (logStream) {
-        if (device)
-            *logStream << device->name << ": ";
+        if (device) {
+            if (device->name.empty())
+                *logStream << device->addressAsString();
+            else
+                *logStream << device->name;
+            *logStream << ": ";
+        }
         *logStream << line << std::endl;
     }
 }
