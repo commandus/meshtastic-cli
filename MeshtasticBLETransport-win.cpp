@@ -303,8 +303,12 @@ int MeshtasticBLETransport::openDevice(
 
     // get service
     winrt::Windows::Devices::Bluetooth::GenericAttributeProfile::GattDeviceServicesResult result = dev->device.GetGattServicesForUuidAsync(MeshtasticBLETransport::meshtasticBluetoothServiceUUID()).get();
-    if (result.Status() != winrt::Windows::Devices::Bluetooth::GenericAttributeProfile::GattCommunicationStatus::Success)
+    if (result.Status() != winrt::Windows::Devices::Bluetooth::GenericAttributeProfile::GattCommunicationStatus::Success) {
+        std::cerr << "Error "
+                  << MeshtasticString::gattCommunicationStatus2string(result.Status())
+                  << " getting service" << std::endl;
         return -1;
+    }
     // get characteristics
     winrt::Windows::Foundation::Collections::IVectorView<winrt::Windows::Devices::Bluetooth::GenericAttributeProfile::GattDeviceService> services = result.Services();
     try {
