@@ -1,12 +1,18 @@
 #
+#
 # Windows prerequisites:
+#
 # vcpkg install --triplet x64-windows protobuf
 # vcpkg install --triplet x64-windows pdcurses
+# vcpkg install --triplet x64-windows wintoast
+#
 # mkdir build; cd build; cmake .. -DCMAKE_TOOLCHAIN_FILE=C:\git\vcpkg\scripts\buildsystems\vcpkg.cmake -DVCPKG_TARGET_TRIPLET=x64-windows
 #
 cmake_minimum_required(VERSION 3.28)
 set(VERSION_INFO 1.0.1)
 project(meshtastic-cli VERSION ${VERSION_INFO})
+
+option(ENABLE_WINTOAST "Build with wintoast" OFF)
 
 set(ARGTABLE3_SRC third-party/argtable3/argtable3.c)
 set(DAEMONIZE_FILE_HELPER_SRC third-party/daemonize.cpp third-party/file-helper.cpp)
@@ -60,6 +66,12 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
         OUTPUT ${GEN_SRC}
         COMMAND powershell ${CMAKE_CURRENT_SOURCE_DIR}/tools/generate-code.ps1 ${CMAKE_CURRENT_SOURCE_DIR}
     )
+
+    if (ENABLE_WINTOAST)
+        find_package(unofficial-wintoast CONFIG REQUIRED)
+        set(LIB_WINTOAST unofficial::wintoast::wintoast)
+    endif()
+
 else()
     set(LIB_PB protobuf)
     find_library(ncurses)
@@ -114,7 +126,7 @@ target_link_libraries(meshtastic PRIVATE ${OS_SPECIFIC_LIBS} )
 # CLI client
 add_executable(mtcli mtcli.cpp)
 target_include_directories(mtcli PRIVATE third-party ${INC_PB} ${GEN})
-target_link_libraries(mtcli PRIVATE meshtastic ${OS_SPECIFIC_LIBS} ${LIB_PB} libmeshtastic-pb ${LIB_CURSES})
+target_link_libraries(mtcli PRIVATE meshtastic ${OS_SPECIFIC_LIBS} ${LIB_PB} ${LIB_WINTOAST} libmeshtastic-pb ${LIB_CURSES})
 
 #
 # Tests
@@ -125,6 +137,7 @@ add_subdirectory(tests)
 message("")
 message("Options (on- enabled, off- disabled):")
 message("")
+message("-DENABLE_WINTOAST=${ENABLE_WINTOAST} \t enable wintoast")
 message("")
 message(" Windows: with -DENABLE_SQLITE=on must provide VCPKG options like -DCMAKE_TOOLCHAIN_FILE=C:\\git\\vcpkg\\")
 message("   scripts\\buildsystems\\vcpkg.cmake -DVCPKG_TARGET_TRIPLET=x64-windows")

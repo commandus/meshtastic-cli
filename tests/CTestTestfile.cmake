@@ -6,3 +6,7 @@ add_test(NAME test-pair-ble COMMAND "test-pair-ble")
 add_test(NAME test-unpair-ble COMMAND "test-unpair-ble")
 add_test(NAME test-write-serial COMMAND "test-write-serial")
 add_test(NAME test-is-serial-meshtastic COMMAND "test-is-serial-meshtastic")
+
+if (ENABLE_WINTOAST)
+    add_test(NAME test-wintoast COMMAND "test-wintoast")
+endif()
