@@ -593,12 +593,6 @@ int MeshtasticBLETransport::startDiscovery() {
 
     discoveryToken = advWatcher.Received([this](const winrt::Windows::Devices::Bluetooth::Advertisement::BluetoothLEAdvertisementWatcher &watcher, const winrt::Windows::Devices::Bluetooth::Advertisement::BluetoothLEAdvertisementReceivedEventArgs &eventArgs) {
         uint64_t addr = eventArgs.BluetoothAddress();
-        if (env->isDebugEnabled(LOG_INFO)) {
-            std::stringstream ss;
-            ss << _("BLE device discovered ") << MeshtasticString::macAddress2string(addr) << " ";
-            env->debugLog(LOG_INFO, ss.str());
-        }
-
         MeshtasticDiscoveryEvent de(nullptr, "", addr, eventArgs.RawSignalStrengthInDBm(), false);
         // Bluetooth Base UUID
         std::vector<winrt::guid> serviceUuids;

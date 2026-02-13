@@ -128,6 +128,11 @@ add_executable(mtcli mtcli.cpp)
 target_include_directories(mtcli PRIVATE third-party ${INC_PB} ${GEN})
 target_link_libraries(mtcli PRIVATE meshtastic ${OS_SPECIFIC_LIBS} ${LIB_PB} ${LIB_WINTOAST} libmeshtastic-pb ${LIB_CURSES})
 
+# logger client
+add_executable(mt-log mt-log.cpp)
+target_include_directories(mt-log PRIVATE third-party ${INC_PB} ${GEN})
+target_link_libraries(mt-log PRIVATE meshtastic ${OS_SPECIFIC_LIBS} ${LIB_PB} ${LIB_WINTOAST} libmeshtastic-pb ${LIB_CURSES})
+
 #
 # Tests
 #
