@@ -199,6 +199,24 @@ static void stop()
     envArgs.cvState.notify_all();
 }
 
+static void printNodeList()
+{
+    for (int i = 0; i < envArgs.env.count(); i++) {
+        auto d = envArgs.env.get(i);
+        if (!d)
+            continue;
+        std::cout << d->name << ' ' << std::endl;
+        for (auto &n : d->context.nodes) {
+            std::cout << std::hex << n.second.num();
+            if (n.second.has_user())
+                std::cout << ' '
+                    << n.second.user().short_name() << " ("
+                    << n.second.user().long_name() << ")";
+            std::cout << std::endl;
+        }
+    }
+}
+
 static void run()
 {
     envArgs.state = CRS_RUNNING;
@@ -228,6 +246,16 @@ static void run()
     }
     if (envArgs.verbose) {
         std::cout << envArgs.env.count() << _(" device(s) found") << std::endl;
+        int nodeCount = 0;
+        for (int i = 0; i < envArgs.env.count(); i++) {
+            auto d = envArgs.env.get(i);
+            if (!d)
+                continue;
+            std::cout << d->name << ": " << d->context.nodes.size() << " node(s)" << std::endl;
+        }
+        if (envArgs.verbose > 1) {
+            printNodeList();
+        }
     }
 
     std::unique_lock<std::mutex> lock(envArgs.mutexState);

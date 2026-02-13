@@ -277,17 +277,14 @@ static void run()
                 auto d = envArgs.env.get(i);
                 if (!d)
                     continue;
-                std::cout
-                        << d->name << ' '
-                        << std::endl;
+                std::cout << d->name << ' ' << std::endl;
                 for (auto &n : d->context.nodes) {
+                    std::cout << std::hex << n.second.num();
                     if (n.second.has_user())
-                        std::cout
-                            << std::hex << n.second.num() << ' '
-                            // << n.second.user().id() << ' '
-                            << n.second.user().short_name() << " ("
-                            << n.second.user().long_name() << ")"
-                            << std::endl;
+                        std::cout << ' '
+                                  << n.second.user().short_name() << " ("
+                                  << n.second.user().long_name() << ")";
+                    std::cout << std::endl;
                 }
             }
             break;
